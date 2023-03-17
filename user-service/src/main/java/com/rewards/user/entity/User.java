@@ -19,7 +19,7 @@ public class User {
     private String name;
     private String passward;
     private Long accountId;
-    private String email;
+    private String emailId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="ManagerId" , referencedColumnName = "id")
     private User manager;

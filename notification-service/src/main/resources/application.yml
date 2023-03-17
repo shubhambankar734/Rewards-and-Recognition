@@ -1,0 +1,8 @@
+server:
+  port: 9003
+
+spring:
+  application:
+    name: NOTIFICATION-SERVICE
+  config:
+    import: configserver:http://localhost:9296
