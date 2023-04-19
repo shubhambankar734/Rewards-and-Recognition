@@ -6,7 +6,8 @@ spring:
     name: USER-SERVICE
   config:
     import: configserver:http://localhost:9296
-
+  zipkin:
+    base_url: http://127.0.0.1:9411/
 #Config for Actuator
 management:
   health:
