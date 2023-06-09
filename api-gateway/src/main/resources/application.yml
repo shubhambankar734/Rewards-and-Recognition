@@ -1,0 +1,31 @@
+server:
+  port: 9191
+
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: ACCOUNT-SERVICE
+          uri: lb://ACCOUNT-SERVICE
+          predicates:
+            - Path=/account/**
+        - id: NOMINATION-SERVICE
+          uri: lb://NOMINATION-SERVICE
+          predicates:
+            - Path=/nomination/**
+        - id: NOTIFICATION-SERVICE
+          uri: lb://NOTIFICATION-SERVICE
+          predicates:
+            - Path=/notification/**
+        - id: REWARDS-SERVICE
+          uri: lb://REWARD-SERVICE
+          predicates:
+            - Path=/reward/**
+        - id: USER-SERVICE
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user/**
+  config:
+    import: configserver:http://localhost:9296
