@@ -21,4 +21,9 @@ public class AccountController {
     public Account saveAccount(@RequestBody Account account){
         return accountService.saveAccount(account);
     }
+
+    @PutMapping("/updateAccount")
+    public Account updateAccount(@RequestBody Account account){
+        return accountService.saveAccount(account);
+    }
 }

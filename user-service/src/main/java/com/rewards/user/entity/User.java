@@ -15,12 +15,12 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long userId;
     private String name;
     private String passward;
     private Long accountId;
     private String emailId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="ManagerId" , referencedColumnName = "id")
+    @JoinColumn(name ="ManagerId" , referencedColumnName = "userId")
     private User manager;
 }

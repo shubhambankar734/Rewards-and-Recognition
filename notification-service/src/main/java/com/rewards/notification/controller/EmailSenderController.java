@@ -15,7 +15,7 @@ public class EmailSenderController {
     EmailSenderService emailSenderService;
 
     @GetMapping("sendEmail")
-    public String sendEmailNotification(@RequestParam String toEmailId, @RequestParam String feedback ){
-        return emailSenderService.sendEmail(toEmailId,feedback);
+    public String sendEmailNotification(@RequestParam String toRecipient, @RequestParam String feedback, @RequestParam String ccRecipient, @RequestParam String subject) {
+        return emailSenderService.sendEmail(toRecipient, feedback, ccRecipient, subject);
     }
 }

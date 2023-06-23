@@ -50,26 +50,26 @@ public class UserService {
     }
 
     public User saveUser(UserDTO currentUserDTO) throws CustomException {
+        log.info("Saving a User");
         User user = userRepository.findByEmailId(currentUserDTO.getEmailId());
         if (user != null) {
             throw new CustomException("Email Id already exist");
         }
-        User manager = getUser(currentUserDTO.getManagerId());
+        User manager = getUser(currentUserDTO.getManagerId(), false);
         User currentUser = userConverter.toUserEntity(currentUserDTO, manager);
         return userRepository.save(currentUser);
     }
 
 
-    public User getUser(Long id) throws CustomException {
+    public User getUser(Long id, boolean getManagerDetails) throws CustomException {
         Optional<User> user = userRepository.findById(id);
-        if (!user.isPresent())
-//            throw new CustomException("User doesnot exist.");
-            return null;
-        return user.get();
+        User currentUser = user.orElseThrow(() -> new CustomException("User doesnot exist."));
+        return (getManagerDetails) ? currentUser.getManager() : currentUser;
     }
 
     public User searchUser(String name) {
+        log.info("Searching User by name");
         Optional<User> optionalUser = userRepository.findByNameContainingIgnoreCase(name);
-        return optionalUser.isPresent() ? optionalUser.get() : null;
+        return optionalUser.orElse(null);
     }
 }

@@ -10,7 +10,7 @@ public class UserConverter {
     public UserDTO toUserDto(User userEntity) {
         UserDTO dto = new UserDTO();
         if(null != userEntity.getManager())
-            dto.setManagerId(userEntity.getManager().getId());
+            dto.setManagerId(userEntity.getManager().getUserId());
         dto.setManagerId(0l);
         BeanUtils.copyProperties(userEntity,dto);
         return dto;

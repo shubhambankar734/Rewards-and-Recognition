@@ -19,24 +19,24 @@ public class UserController {
     @Autowired
     private UserConverter userConverter;
 
-    @GetMapping("/getUser/{id}")
-    public User getUser(@PathVariable Long id) throws CustomException {
-        return userService.getUser(id);
+    @GetMapping("/getuser/{id}")
+    public User getUser(@PathVariable Long id, @RequestParam(required = false) boolean getManagerDetails) throws CustomException {
+        return userService.getUser(id, getManagerDetails);
     }
 
-    @GetMapping("/getUserWithAccountDetails/{id}")
-    public ResponseEntity<Object> getUserWithAccountDetails(@PathVariable Long id){
+    @GetMapping("/getuserwithaccountdetails/{id}")
+    public ResponseEntity<Object> getUserWithAccountDetails(@PathVariable Long id) {
         return userService.getUserWithAccountDetails(id);
     }
 
-    @PostMapping("/saveUser")
-    public UserDTO saveUser(@RequestBody UserDTO userDTO) throws CustomException{
+    @PostMapping("/saveuser")
+    public UserDTO saveUser(@RequestBody UserDTO userDTO) throws CustomException {
         User user = userService.saveUser(userDTO);
         return userConverter.toUserDto(user);
     }
 
     @GetMapping("searchuser/{name}")
-    public User searchUser(@PathVariable String name){
+    public User searchUser(@PathVariable String name) {
         return userService.searchUser(name);
     }
 
