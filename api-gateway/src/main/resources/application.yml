@@ -23,8 +23,8 @@ spring:
           uri: lb://REWARD-SERVICE
           predicates:
             - Path=/reward/**
-        - id: USER-SERVICE
-          uri: lb://USER-SERVICE
+        - id: EMPLOYEE-SERVICE
+          uri: lb://EMPLOYEE-SERVICE
           predicates:
             - Path=/user/**
   config:

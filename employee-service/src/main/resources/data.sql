@@ -1,0 +1,1 @@
+insert into EMPLOYEE_DETAIL (EMP_ID, NAME, PASSWARD, ACCOUNT_ID, EMAIL_ID, MANAGER_ID) values (1,'Admin','admin@123', 1, 'admin@gmail.com', NULL)
