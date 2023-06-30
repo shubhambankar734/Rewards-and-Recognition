@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -69,7 +71,10 @@ public class EmployeeService {
 
     public Employee searchEmployee(String name) {
         log.info("Searching Employee by name");
-        Optional<Employee> optionalEmployee = employeeRepository.findByNameContainingIgnoreCase(name);
-        return optionalEmployee.orElse(null);
+        return employeeRepository.findByNameContainingIgnoreCase(name).orElse(null);
+    }
+
+    public List<Employee> saveEmployees(@RequestBody List<Employee> employeeList){
+        return employeeRepository.saveAll(employeeList);
     }
 }

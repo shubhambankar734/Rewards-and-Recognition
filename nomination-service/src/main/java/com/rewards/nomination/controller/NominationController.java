@@ -25,18 +25,18 @@ public class NominationController {
         return nominationService.saveNomination(nomination);
     }
 
-    @PutMapping("updatenomination")
+    @PutMapping("updateNomination")
     public ResponseEntity<NominationEntity> updateNomination(@RequestBody NominationEntity nomination) {
         return new ResponseEntity<>(nominationService.saveNomination(nomination), HttpStatus.OK);
     }
 
-    @DeleteMapping("deletenomination/{id}")
+    @DeleteMapping("deleteNomination/{id}")
     public ResponseEntity deleteNomination(@PathVariable Long id) {
         nominationService.deleteNominationById(id);
         return new ResponseEntity("Record Deleted Successfully", HttpStatus.OK);
     }
 
-    @GetMapping("findallbynominationstatus")
+    @GetMapping("findAllByNominationStatus")
     public ResponseEntity<NominationEntity> findByNominationStatus(@RequestParam NominationStatusEnum status, @RequestParam("PageNo") int pageNo, @RequestParam("PageSize") int pageSize) {
         return new ResponseEntity(nominationService.findByNominationStatus(status, pageNo, pageSize), HttpStatus.OK);
     }

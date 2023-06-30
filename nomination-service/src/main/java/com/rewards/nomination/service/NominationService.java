@@ -11,6 +11,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,7 @@ public class NominationService {
     public NominationEntity saveNomination(NominationEntity nomination) {
         nomination.setNominationStatus(NominationStatusEnum.SUBMITTED);
         nomination.setSupportCount(1);
+        nomination.setNominationDate(new Date());
 //        if (nomination.getNominatedTo() != 0l) {
 //            UserDTO user = restTemplate.getForObject("http://localhost:8080/getUser/" + nomination.getNominatedTo(), UserDTO.class);
 //            nomination.setNominatedManagerId(user.getManagerId());
