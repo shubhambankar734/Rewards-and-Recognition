@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("nomination")
+@CrossOrigin("*")
 public class NominationController {
 
     @Autowired

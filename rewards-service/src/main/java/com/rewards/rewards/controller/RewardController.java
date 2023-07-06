@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/reward")
+@CrossOrigin("*")
 public class RewardController {
 
     @Autowired

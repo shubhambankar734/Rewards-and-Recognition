@@ -11,7 +11,7 @@ public class EmployeeDTO {
 
     private long id;
     private String name;
-    private String passward;
+    private String password;
     private long accountId;
     private String emailId;
     private long managerId;

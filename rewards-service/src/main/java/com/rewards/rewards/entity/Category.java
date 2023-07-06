@@ -17,7 +17,6 @@ public class Category {
     private Long categoryId;
     private String categoryCode;
     private String categoryName;
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rewardId", referencedColumnName = "rewardId")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="category")
     private List<Reward> rewardList;
 }

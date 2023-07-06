@@ -30,24 +30,25 @@ spring:
           predicates:
             - Path=/reward/**
           filters:
-            - RewritePath=/rewards/(?<path>.*), /$\{path}
+            - RewritePath=/reward/(?<path>.*), /$\{path}
         - id: EMPLOYEE-SERVICE
           uri: lb://EMPLOYEE-SERVICE
           predicates:
             - Path=/employee/**
           filters:
             - RewritePath=/employee/(?<path>.*), /$\{path}
-        - id: openapi
-          uri: http://localhost:${server.port}
-          predicates:
-            - Path=/v3/api-docs/**
-          filters:
-            - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
   config:
     import: configserver:http://localhost:9296
 
+
 springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: true
   swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
     urls:
       - name: employee
         url: /v3/api-docs/employee
