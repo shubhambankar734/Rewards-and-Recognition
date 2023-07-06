@@ -11,21 +11,51 @@ spring:
           uri: lb://ACCOUNT-SERVICE
           predicates:
             - Path=/account/**
+          filters:
+            - RewritePath=/account/(?<path>.*), /$\{path}
         - id: NOMINATION-SERVICE
           uri: lb://NOMINATION-SERVICE
           predicates:
             - Path=/nomination/**
+          filters:
+            - RewritePath=/nomination/(?<path>.*), /$\{path}
         - id: NOTIFICATION-SERVICE
           uri: lb://NOTIFICATION-SERVICE
           predicates:
             - Path=/notification/**
-        - id: REWARDS-SERVICE
+          filters:
+            - RewritePath=/notification/(?<path>.*), /$\{path}
+        - id: REWARD-SERVICE
           uri: lb://REWARD-SERVICE
           predicates:
             - Path=/reward/**
+          filters:
+            - RewritePath=/rewards/(?<path>.*), /$\{path}
         - id: EMPLOYEE-SERVICE
           uri: lb://EMPLOYEE-SERVICE
           predicates:
-            - Path=/user/**
+            - Path=/employee/**
+          filters:
+            - RewritePath=/employee/(?<path>.*), /$\{path}
+        - id: openapi
+          uri: http://localhost:${server.port}
+          predicates:
+            - Path=/v3/api-docs/**
+          filters:
+            - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
   config:
     import: configserver:http://localhost:9296
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: employee
+        url: /v3/api-docs/employee
+      - name: account
+        url: /v3/api-docs/account
+      - name: reward
+        url: /v3/api-docs/reward
+      - name: nomination
+        url: /v3/api-docs/nomination
+      - name: notification
+        url: /v3/api-docs/notification
