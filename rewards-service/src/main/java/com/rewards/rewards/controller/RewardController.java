@@ -1,7 +1,10 @@
 package com.rewards.rewards.controller;
 
+import com.rewards.rewards.converter.RewardConverter;
+import com.rewards.rewards.dto.RewardDTO;
 import com.rewards.rewards.entity.Category;
 import com.rewards.rewards.entity.Reward;
+import com.rewards.rewards.exception.CustomException;
 import com.rewards.rewards.service.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,19 +20,23 @@ public class RewardController {
     @Autowired
     private RewardService rewardService;
 
+    @Autowired
+    private RewardConverter rewardConverter;
+
     @GetMapping("/getreward/{id}")
-    public Reward getReward(@PathVariable("id") Long id){
-        return rewardService.getRewardById(id);
+    public RewardDTO getReward(@PathVariable("id") Long id){
+        Reward reward = rewardService.getRewardById(id);
+        return rewardConverter.toRewardDTO(reward);
     }
 
     @PostMapping("/savereward")
-    public Reward saveReward(@RequestBody Reward reward){
-        return rewardService.saveReward(reward);
+    public RewardDTO saveReward(@RequestBody RewardDTO reward) throws CustomException {
+      return rewardConverter.toRewardDTO(rewardService.saveReward(reward));
     }
 
     @PutMapping("/updatereward")
-    public Reward updateReward(@RequestBody Reward reward){
-        return rewardService.saveReward(reward);
+    public RewardDTO updateReward(@RequestBody RewardDTO reward) throws CustomException {
+        return rewardConverter.toRewardDTO(rewardService.saveReward(reward));
     }
 
     @GetMapping("/getallreward")
