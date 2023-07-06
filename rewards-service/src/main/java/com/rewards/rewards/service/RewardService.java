@@ -1,7 +1,10 @@
 package com.rewards.rewards.service;
 
+import com.rewards.rewards.converter.RewardConverter;
+import com.rewards.rewards.dto.RewardDTO;
 import com.rewards.rewards.entity.Category;
 import com.rewards.rewards.entity.Reward;
+import com.rewards.rewards.exception.CustomException;
 import com.rewards.rewards.repository.CategoryRepository;
 import com.rewards.rewards.repository.RewardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +21,17 @@ public class RewardService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private RewardConverter rewardConverter;
+
     public Reward getRewardById(Long id) {
-        Optional<Reward> reward = rewardRepository.findById(id);
-        return reward.isPresent() ? reward.get() : null;
+        return rewardRepository.findById(id).orElse(null);
     }
 
-    public Reward saveReward(Reward reward) {
-        return rewardRepository.save(reward);
+    public Reward saveReward(RewardDTO reward) throws CustomException {
+        Optional<Category> categoryOptional = categoryRepository.findById(reward.getCategoryId());
+        Category category = categoryOptional.orElseThrow(() -> new CustomException("Category Does not exist"));
+        return rewardRepository.save(rewardConverter.toRewardEntity(reward , category));
     }
 
     public List<Reward> getAllRewards() {
