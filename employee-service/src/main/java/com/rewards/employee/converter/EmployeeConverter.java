@@ -11,7 +11,9 @@ public class EmployeeConverter {
         EmployeeDTO dto = new EmployeeDTO();
         if(null != employeeEntity.getManager())
             dto.setManagerId(employeeEntity.getManager().getEmpId());
-        dto.setManagerId(0l);
+        else {
+            dto.setManagerId(0l);
+        }
         BeanUtils.copyProperties(employeeEntity,dto);
         return dto;
     }

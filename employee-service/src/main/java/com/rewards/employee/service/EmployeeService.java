@@ -74,7 +74,7 @@ public class EmployeeService {
         return employeeRepository.findByNameContainingIgnoreCase(name).orElse(null);
     }
 
-    public List<Employee> saveEmployees(@RequestBody List<Employee> employeeList){
+    public List<Employee> saveEmployees(@RequestBody List<Employee> employeeList) {
         return employeeRepository.saveAll(employeeList);
     }
 }

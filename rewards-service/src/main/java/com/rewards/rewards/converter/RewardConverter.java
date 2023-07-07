@@ -9,21 +9,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class RewardConverter {
 
-  public RewardDTO toRewardDTO(Reward reward){
-      RewardDTO rewardDTO = new RewardDTO();
-    if (reward.getCategory().getCategoryId() != null) {
-      rewardDTO.setCategoryId(reward.getCategory().getCategoryId());
-    } else {
-      rewardDTO.setCategoryId(0l);
+    public RewardDTO toRewardDTO(Reward reward) {
+        RewardDTO rewardDTO = new RewardDTO();
+        if (reward.getCategory().getCategoryId() != null) {
+            rewardDTO.setCategoryId(reward.getCategory().getCategoryId());
+        } else {
+            rewardDTO.setCategoryId(0l);
+        }
+        BeanUtils.copyProperties(reward, rewardDTO);
+        return rewardDTO;
     }
-    BeanUtils.copyProperties(reward , rewardDTO);
-    return rewardDTO;
-  }
 
-  public Reward toRewardEntity(RewardDTO rewardDTO , Category category){
-    Reward reward = new Reward();
-    reward.setCategory(category);
-    BeanUtils.copyProperties(rewardDTO , reward);
-    return reward;
-  }
+    public Reward toRewardEntity(RewardDTO rewardDTO, Category category) {
+        Reward reward = new Reward();
+        reward.setCategory(category);
+        BeanUtils.copyProperties(rewardDTO, reward);
+        return reward;
+    }
 }
