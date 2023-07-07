@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 public class EmployeeDTO {
 
     private long empId;
-    private String empCode;
+    private long empCode;
     private String name;
     private String password;
     private long accountId;
     private String emailId;
     private long managerId;
+    private long managerEmpCode;
 }

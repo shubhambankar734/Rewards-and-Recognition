@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -57,7 +58,7 @@ public class EmployeeService {
         if (employee != null) {
             throw new CustomException("Email Id already exist");
         }
-        Employee manager = getEmployee(currentEmployeeDTO.getManagerId(), false);
+        Employee manager = getEmployee(currentEmployeeDTO.getManagerEmpCode(), false);
         Employee currentEmployee = employeeConverter.toEmpEntity(currentEmployeeDTO, manager);
         return employeeRepository.save(currentEmployee);
     }
@@ -74,7 +75,20 @@ public class EmployeeService {
         return employeeRepository.findByNameContainingIgnoreCase(name).orElse(null);
     }
 
-    public List<Employee> saveEmployees(@RequestBody List<Employee> employeeList) {
-        return employeeRepository.saveAll(employeeList);
+    public List<Employee> saveEmployees(@RequestBody List<EmployeeDTO> employeeList) {
+        return employeeList.stream().map(employeeDto -> {
+            Employee manager = employeeRepository.findByEmpCode(employeeDto.getManagerEmpCode()).orElse(null);
+            //if Employee's Manager doesnot exist in DB
+            if (manager == null) {
+                manager = new Employee();
+                manager.setEmpCode(employeeDto.getManagerEmpCode());
+                manager = employeeRepository.save(manager);
+            }
+            Employee employee = employeeRepository.findByEmpCode(employeeDto.getEmpCode()).orElse(null);
+            //if Manager exist as Employee
+			if (employee != null)
+                employeeDto.setEmpId(employee.getEmpId());
+            return employeeRepository.save(employeeConverter.toEmpEntity(employeeDto, manager));
+        }).collect(Collectors.toList());
     }
 }

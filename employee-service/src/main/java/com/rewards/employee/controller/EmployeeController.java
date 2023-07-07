@@ -46,7 +46,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/saveAllEmp")
-    public ResponseEntity<List<Employee>> saveAllEmployees(@RequestBody List<Employee> employees){
+    public ResponseEntity<List<Employee>> saveAllEmployees(@RequestBody List<EmployeeDTO> employees){
         return new ResponseEntity<>(employeeService.saveEmployees(employees), HttpStatus.CREATED);
     }
 }

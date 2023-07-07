@@ -13,8 +13,6 @@ public class RewardConverter {
         RewardDTO rewardDTO = new RewardDTO();
         if (reward.getCategory().getCategoryId() != null) {
             rewardDTO.setCategoryId(reward.getCategory().getCategoryId());
-        } else {
-            rewardDTO.setCategoryId(0l);
         }
         BeanUtils.copyProperties(reward, rewardDTO);
         return rewardDTO;
