@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmployeeDTO {
 
-    private long id;
+    private long empId;
+    private String empCode;
     private String name;
     private String password;
     private long accountId;

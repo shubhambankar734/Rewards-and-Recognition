@@ -16,6 +16,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long empId;
+    private String empCode;
     private String name;
     private String password;
     private Long accountId;
