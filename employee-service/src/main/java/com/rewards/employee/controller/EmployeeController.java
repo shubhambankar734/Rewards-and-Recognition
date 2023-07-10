@@ -23,26 +23,41 @@ public class EmployeeController {
     @Autowired
     private EmployeeConverter employeeConverter;
 
-    @GetMapping("/getEmp/{id}")
-    public EmployeeDTO getEmployee(@PathVariable Long id, @RequestParam(required = false) boolean getManagerDetails) throws CustomException {
-        Employee employee = employeeService.getEmployee(id, getManagerDetails);
-        return employeeConverter.toEmpDto(employee);
+    @GetMapping("/getEmpWithId/{empId}")
+    public ResponseEntity<EmployeeDTO> getEmployeeByEmpId(@PathVariable Long empId, @RequestParam(required = false) boolean getManagerDetails) throws CustomException {
+        Employee employee = employeeService.getEmployeeByEmpId(empId, getManagerDetails);
+        if(employee == null)
+            throw new CustomException("Manager doesn't exist.");
+        return new ResponseEntity<>(employeeConverter.toEmpDto(employee), HttpStatus.OK);
+    }
+
+    @GetMapping("/getEmpWithCode/{empCode}")
+    public ResponseEntity<EmployeeDTO> getEmployeeByEmpCode(@PathVariable Long empCode, @RequestParam(required = false) boolean getManagerDetails) throws CustomException {
+        Employee employee = employeeService.getEmployeeByEmpCode(empCode, getManagerDetails);
+        if(employee == null)
+            throw new CustomException("Manager doesn't exist.");
+        return new ResponseEntity<>(employeeConverter.toEmpDto(employee), HttpStatus.OK);
     }
 
     @GetMapping("/getEmpWithAccountDetails/{id}")
-    public ResponseEntity<Object> getEmpWithAccountDetails(@PathVariable Long id) {
-        return employeeService.getEmpWithAccountDetails(id);
+    public ResponseEntity<Object> getEmpWithAccountDetails(@PathVariable Long id) throws CustomException {
+        return new ResponseEntity<>(employeeService.getEmpWithAccountDetails(id), HttpStatus.OK);
     }
 
     @PostMapping("/saveEmp")
-    public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) throws CustomException {
+    public ResponseEntity<EmployeeDTO> saveEmployee(@RequestBody EmployeeDTO employeeDTO) throws CustomException {
         Employee employee = employeeService.saveEmployee(employeeDTO);
-        return employeeConverter.toEmpDto(employee);
+        return new ResponseEntity<>(employeeConverter.toEmpDto(employee), HttpStatus.CREATED);
     }
 
     @GetMapping("/searchEmp/{name}")
-    public Employee searchEmployee(@PathVariable String name) {
-        return employeeService.searchEmployee(name);
+    public ResponseEntity<List<EmployeeDTO>> searchEmployee(@PathVariable String name) {
+        return new ResponseEntity<>(employeeConverter.toEmpDtoList(employeeService.searchEmployee(name)), HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllEmpWithinAccount/{accountCode}")
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployeesInAccount(@PathVariable String accountCode) {
+        return new ResponseEntity<>(employeeConverter.toEmpDtoList(employeeService.getEmployeesByAccCode(accountCode)), HttpStatus.OK);
     }
 
     @PostMapping("/saveAllEmp")

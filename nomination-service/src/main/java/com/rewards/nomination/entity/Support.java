@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table
 public class Support {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long supportId;
 
     @ManyToOne(fetch = FetchType.LAZY)

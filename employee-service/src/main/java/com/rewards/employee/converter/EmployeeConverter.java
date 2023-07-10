@@ -5,6 +5,9 @@ import com.rewards.employee.entity.Employee;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class EmployeeConverter {
     public EmployeeDTO toEmpDto(Employee employeeEntity) {
@@ -23,5 +26,9 @@ public class EmployeeConverter {
         employee.setManager(manager);
         BeanUtils.copyProperties(employeeDTO, employee);
         return employee;
+    }
+
+    public List<EmployeeDTO> toEmpDtoList(List<Employee> employeeList){
+        return employeeList.stream().map(this::toEmpDto).collect(Collectors.toList());
     }
 }

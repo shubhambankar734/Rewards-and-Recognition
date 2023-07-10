@@ -34,21 +34,21 @@ public class EmployeeService {
     private RestTemplate restTemplate;
 
     @CircuitBreaker(name = "empService", fallbackMethod = "fallbackEmpServiceMethod")
-    public ResponseEntity<Object> getEmpWithAccountDetails(Long id) {
+    public ResponseEntity<Object> getEmpWithAccountDetails(Long id) throws CustomException {
         log.info("Inside getEmpWithAccountDetails of Employee Service");
         EmpWAccount empWAccount = new EmpWAccount();
         Optional<Employee> employee = employeeRepository.findById(id);
         if (employee.isPresent()) {
             Account account = restTemplate.getForObject("http://ACCOUNT-SERVICE/account/getAccount/" + employee.get().getAccountId() +
                     "", Account.class);
-            empWAccount.setEmployee(employee.get());
+            empWAccount.setEmployeeDTO(employeeConverter.toEmpDto(employee.get()));
             empWAccount.setAccount(account);
             return ResponseEntity.ok(empWAccount);
         }
-        return null;
+        throw new CustomException("Employee doesn't exist.");
     }
 
-    public ResponseEntity<Object> fallbackEmployeeServiceMethod(Exception e) throws Exception {
+    public ResponseEntity<Object> fallbackEmpServiceMethod(Exception e) throws Exception {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Account service is taking longer time than expected. Please try again later.");
     }
 
@@ -58,21 +58,27 @@ public class EmployeeService {
         if (employee != null) {
             throw new CustomException("Email Id already exist");
         }
-        Employee manager = getEmployee(currentEmployeeDTO.getManagerEmpCode(), false);
+        Employee manager = getEmployeeByEmpCode(currentEmployeeDTO.getManagerEmpCode(), false);
         Employee currentEmployee = employeeConverter.toEmpEntity(currentEmployeeDTO, manager);
         return employeeRepository.save(currentEmployee);
     }
 
 
-    public Employee getEmployee(Long id, boolean getManagerDetails) throws CustomException {
-        Optional<Employee> employee = employeeRepository.findById(id);
+    public Employee getEmployeeByEmpId(Long empId, boolean getManagerDetails) throws CustomException {
+        Optional<Employee> employee = employeeRepository.findById(empId);
         Employee currentEmployee = employee.orElseThrow(() -> new CustomException("Employee doesnot exist."));
         return (getManagerDetails) ? currentEmployee.getManager() : currentEmployee;
     }
 
-    public Employee searchEmployee(String name) {
+    public Employee getEmployeeByEmpCode(Long empCode, boolean getManagerDetails) throws CustomException {
+        Employee currentEmployee = employeeRepository.findByEmpCode(empCode).
+                orElseThrow(() -> new CustomException("Employee doesnot exist."));
+        return (getManagerDetails) ? currentEmployee.getManager() : currentEmployee;
+    }
+
+    public List<Employee> searchEmployee(String name) {
         log.info("Searching Employee by name");
-        return employeeRepository.findByNameContainingIgnoreCase(name).orElse(null);
+        return employeeRepository.findByNameContainingIgnoreCase(name);
     }
 
     public List<Employee> saveEmployees(@RequestBody List<EmployeeDTO> employeeList) {
@@ -90,5 +96,9 @@ public class EmployeeService {
                 employeeDto.setEmpId(employee.getEmpId());
             return employeeRepository.save(employeeConverter.toEmpEntity(employeeDto, manager));
         }).collect(Collectors.toList());
+    }
+
+    public List<Employee> getEmployeesByAccCode(String accountCode) {
+        return employeeRepository.findByAccountCode(accountCode);
     }
 }

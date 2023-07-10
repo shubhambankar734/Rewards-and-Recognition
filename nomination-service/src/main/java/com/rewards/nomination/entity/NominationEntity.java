@@ -14,7 +14,7 @@ import java.util.Date;
 @Table(name = "nomination")
 public class NominationEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long nominationId;
     private NominationTypeEnum nominationType;
     private String feedback;

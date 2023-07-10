@@ -12,7 +12,7 @@ import java.util.Date;
 @Table
 public class Recognition {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long recognitionId;
 
     @ManyToOne(fetch = FetchType.LAZY)

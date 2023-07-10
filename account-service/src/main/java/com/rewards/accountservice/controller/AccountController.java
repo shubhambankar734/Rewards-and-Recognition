@@ -5,7 +5,11 @@ import com.rewards.accountservice.service.AccountService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/account")
@@ -16,8 +20,8 @@ public class AccountController {
     private AccountService accountService;
 
     @GetMapping("/getAccount/{id}")
-    public Account getAccountById(@PathVariable("id") Long id){
-        return accountService.getAccountById(id);
+    public ResponseEntity<Account> getAccountById(@PathVariable("id") Long id){
+        return new ResponseEntity<>(accountService.getAccountById(id), HttpStatus.OK);
     }
 
     @PostMapping("/saveAccount")
@@ -26,12 +30,17 @@ public class AccountController {
             @ApiResponse(responseCode = "400", description = "Bad request"),
             @ApiResponse(responseCode = "404", description = "Not found")
     })
-    public Account saveAccount(@RequestBody Account account){
-        return accountService.saveAccount(account);
+    public ResponseEntity<Account> saveAccount(@RequestBody Account account){
+        return new ResponseEntity<>(accountService.saveAccount(account), HttpStatus.OK);
     }
 
     @PutMapping("/updateAccount")
-    public Account updateAccount(@RequestBody Account account){
-        return accountService.saveAccount(account);
+    public ResponseEntity<Account> updateAccount(@RequestBody Account account){
+        return new ResponseEntity<>(accountService.saveAccount(account), HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllAccounts")
+    public ResponseEntity<List<Account>> getAllAccounts(){
+        return new ResponseEntity<>(accountService.getAllAccounts(), HttpStatus.OK);
     }
 }
