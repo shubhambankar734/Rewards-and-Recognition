@@ -48,7 +48,7 @@ public class EmployeeService {
         throw new CustomException("Employee doesn't exist.");
     }
 
-    public ResponseEntity<Object> fallbackEmpServiceMethod(Exception e) throws Exception {
+    public ResponseEntity<Object> fallbackEmpServiceMethod(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Account service is taking longer time than expected. Please try again later.");
     }
 

@@ -1,5 +1,9 @@
 package com.rewards.employee;
 
+import com.rewards.employee.exception.CustomException;
+import io.github.resilience4j.circuitbreaker.CircuitBreaker;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.boot.SpringApplication;
@@ -20,8 +24,9 @@ public class EmployeeServiceApplication {
 
 	@Bean
 	@LoadBalanced
-	public RestTemplate getRestTemplete(){
+	public RestTemplate getRestTemplate() {
 		return new RestTemplate();
 	}
+
 }
 

@@ -19,7 +19,7 @@ public class Category {
     private Long categoryId;
     private String categoryCode;
     private String categoryName;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="category",cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Reward> rewardList;
 }
