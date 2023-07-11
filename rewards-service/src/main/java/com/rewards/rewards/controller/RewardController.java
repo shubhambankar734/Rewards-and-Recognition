@@ -9,13 +9,16 @@ import com.rewards.rewards.service.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/reward")
 @CrossOrigin("*")
+@Validated
 public class RewardController {
 
     @Autowired
@@ -24,56 +27,61 @@ public class RewardController {
     @Autowired
     private RewardConverter rewardConverter;
 
-    @GetMapping("/getreward/{id}")
-    public RewardDTO getReward(@PathVariable("id") Long id){
+    @GetMapping("/getReward/{id}")
+    public ResponseEntity<RewardDTO> getReward(@PathVariable("id") Long id) {
         Reward reward = rewardService.getRewardById(id);
-        return rewardConverter.toRewardDTO(reward);
+        return new ResponseEntity<>(rewardConverter.toRewardDTO(reward), HttpStatus.OK);
     }
 
-    @PostMapping("/savereward")
-    public RewardDTO saveReward(@RequestBody RewardDTO reward) throws CustomException {
-      return rewardConverter.toRewardDTO(rewardService.saveReward(reward));
+    @PostMapping("/saveReward")
+    public ResponseEntity<RewardDTO> saveReward(@RequestBody RewardDTO reward) throws CustomException {
+        return new ResponseEntity<>(rewardConverter.toRewardDTO(rewardService.saveReward(reward)), HttpStatus.CREATED);
     }
 
-    @PutMapping("/updatereward")
-    public RewardDTO updateReward(@RequestBody RewardDTO reward) throws CustomException {
-        return rewardConverter.toRewardDTO(rewardService.saveReward(reward));
+    @PutMapping("/updateReward")
+    public ResponseEntity<RewardDTO> updateReward(@RequestBody RewardDTO reward) throws CustomException {
+        return new ResponseEntity<>(rewardConverter.toRewardDTO(rewardService.saveReward(reward)), HttpStatus.OK);
     }
 
-    @GetMapping("/getallreward")
-    public ResponseEntity<List<Reward>> getAllRewards(){
+    @GetMapping("/getAllReward")
+    public ResponseEntity<List<Reward>> getAllRewards() {
         return new ResponseEntity<>(rewardService.getAllRewards(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/deletereward/{id}")
-    public ResponseEntity<Object> deleteByRewardId(@PathVariable("id") Long id){
+    @DeleteMapping("/deleteReward/{id}")
+    public ResponseEntity<Void> deleteByRewardId(@PathVariable("id") Long id) {
         rewardService.deleteByRewardId(id);
-        return new ResponseEntity<>("Record Deleted Successfully", HttpStatus.OK);
+        return new ResponseEntity("Record Deleted Successfully", HttpStatus.OK);
     }
 
-    @GetMapping("/getcategory/{id}")
-    public Category getCategoryById(@PathVariable("id") Long id){
-        return rewardService.getCategoryById(id);
+    @GetMapping("/getCategory/{id}")
+    public ResponseEntity<Category> getCategoryById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(rewardService.getCategoryById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/savecategory")
-    public Category saveCategory(@RequestBody Category category){
-        return rewardService.saveCategory(category);
+    @PostMapping("/saveCategory")
+    public ResponseEntity<Category> saveCategory(@RequestBody Category category) {
+        return new ResponseEntity<>(rewardService.saveCategory(category), HttpStatus.CREATED);
     }
 
-    @PutMapping("/updatecategory")
-    public Category updateCategory(@RequestBody Category category){
-        return rewardService.saveCategory(category);
+    @PutMapping("/updateCategory")
+    public ResponseEntity<Category> updateCategory(@RequestBody Category category) {
+        return new ResponseEntity<>(rewardService.saveCategory(category), HttpStatus.OK);
     }
 
-    @GetMapping("/getallcategory")
-    public ResponseEntity<List<Category>> getAllCategory(){
+    @GetMapping("/getAllCategory")
+    public ResponseEntity<List<Category>> getAllCategory() {
         return new ResponseEntity<>(rewardService.getAllCategory(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/deletecategory/{id}")
-    public ResponseEntity<Object> deleteByCategoryId(@PathVariable("id") Long id){
+    @DeleteMapping("/deleteCategory/{id}")
+    public ResponseEntity<Object> deleteByCategoryId(@PathVariable("id") Long id) {
         rewardService.deleteByCategoryId(id);
         return new ResponseEntity<>("Record Deleted Successfully", HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllRewardsByCategoryId/{categoryId}")
+    public ResponseEntity<List<Reward>> getAllRewardsByCategoryId(@PathVariable Long categoryId) {
+        return new ResponseEntity<>(rewardService.getAllRewardsByCategoryId(categoryId), HttpStatus.OK);
     }
 }

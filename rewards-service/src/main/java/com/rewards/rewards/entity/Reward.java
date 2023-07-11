@@ -22,6 +22,7 @@ public class Reward implements Serializable {
     private String rewardCode;
     @JsonBackReference
     @ManyToOne
+    @JoinColumn(name = "CategoryId")
     private Category category;
 
 }

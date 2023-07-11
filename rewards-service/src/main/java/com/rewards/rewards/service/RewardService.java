@@ -30,7 +30,7 @@ public class RewardService {
 
     public Reward saveReward(RewardDTO reward) throws CustomException {
         Optional<Category> categoryOptional = categoryRepository.findById(reward.getCategoryId());
-        Category category = categoryOptional.orElseThrow(() -> new CustomException("Category Does not exist"));
+        Category category = categoryOptional.orElseThrow(() -> new CustomException("Category does not exist."));
         return rewardRepository.save(rewardConverter.toRewardEntity(reward , category));
     }
 
@@ -59,4 +59,7 @@ public class RewardService {
         return categoryRepository.findAll();
     }
 
+    public List<Reward> getAllRewardsByCategoryId(Long categoryId) {
+        return rewardRepository.findByCategoryCategoryId(categoryId);
+    }
 }
