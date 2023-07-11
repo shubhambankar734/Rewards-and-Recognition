@@ -28,7 +28,7 @@ public class RewardController {
     private RewardConverter rewardConverter;
 
     @GetMapping("/getReward/{id}")
-    public ResponseEntity<RewardDTO> getReward(@PathVariable("id") Long id) {
+    public ResponseEntity<RewardDTO> getReward(@PathVariable("id") Long id) throws CustomException {
         Reward reward = rewardService.getRewardById(id);
         return new ResponseEntity<>(rewardConverter.toRewardDTO(reward), HttpStatus.OK);
     }
@@ -49,13 +49,13 @@ public class RewardController {
     }
 
     @DeleteMapping("/deleteReward/{id}")
-    public ResponseEntity<Void> deleteByRewardId(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> deleteByRewardId(@PathVariable("id") Long id) throws CustomException {
         rewardService.deleteByRewardId(id);
         return new ResponseEntity("Record Deleted Successfully", HttpStatus.OK);
     }
 
     @GetMapping("/getCategory/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable("id") Long id) {
+    public ResponseEntity<Category> getCategoryById(@PathVariable("id") Long id) throws CustomException {
         return new ResponseEntity<>(rewardService.getCategoryById(id), HttpStatus.OK);
     }
 
@@ -75,13 +75,13 @@ public class RewardController {
     }
 
     @DeleteMapping("/deleteCategory/{id}")
-    public ResponseEntity<Object> deleteByCategoryId(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> deleteByCategoryId(@PathVariable("id") Long id) throws CustomException {
         rewardService.deleteByCategoryId(id);
         return new ResponseEntity<>("Record Deleted Successfully", HttpStatus.OK);
     }
 
     @GetMapping("/getAllRewardsByCategoryId/{categoryId}")
-    public ResponseEntity<List<Reward>> getAllRewardsByCategoryId(@PathVariable Long categoryId) {
+    public ResponseEntity<List<Reward>> getAllRewardsByCategoryId(@PathVariable Long categoryId) throws CustomException {
         return new ResponseEntity<>(rewardService.getAllRewardsByCategoryId(categoryId), HttpStatus.OK);
     }
 }

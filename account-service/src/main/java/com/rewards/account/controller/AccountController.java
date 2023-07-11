@@ -1,7 +1,8 @@
-package com.rewards.accountservice.controller;
+package com.rewards.account.controller;
 
-import com.rewards.accountservice.entity.Account;
-import com.rewards.accountservice.service.AccountService;
+import com.rewards.account.entity.Account;
+import com.rewards.account.exception.CustomException;
+import com.rewards.account.service.AccountService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class AccountController {
     private AccountService accountService;
 
     @GetMapping("/getAccount/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable("id") Long id){
+    public ResponseEntity<Account> getAccountById(@PathVariable("id") Long id) throws CustomException {
         return new ResponseEntity<>(accountService.getAccountById(id), HttpStatus.OK);
     }
 
@@ -30,17 +31,17 @@ public class AccountController {
             @ApiResponse(responseCode = "400", description = "Bad request"),
             @ApiResponse(responseCode = "404", description = "Not found")
     })
-    public ResponseEntity<Account> saveAccount(@RequestBody Account account){
+    public ResponseEntity<Account> saveAccount(@RequestBody Account account) throws CustomException {
         return new ResponseEntity<>(accountService.saveAccount(account), HttpStatus.OK);
     }
 
     @PutMapping("/updateAccount")
-    public ResponseEntity<Account> updateAccount(@RequestBody Account account){
+    public ResponseEntity<Account> updateAccount(@RequestBody Account account) throws CustomException {
         return new ResponseEntity<>(accountService.saveAccount(account), HttpStatus.OK);
     }
 
     @GetMapping("/getAllAccounts")
-    public ResponseEntity<List<Account>> getAllAccounts(){
+    public ResponseEntity<List<Account>> getAllAccounts() {
         return new ResponseEntity<>(accountService.getAllAccounts(), HttpStatus.OK);
     }
 }

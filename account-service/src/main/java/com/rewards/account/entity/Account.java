@@ -1,4 +1,4 @@
-package com.rewards.accountservice.entity;
+package com.rewards.account.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,1 +1,3 @@
 insert into EMPLOYEE_DETAIL (NAME, PASSWORD, ACCOUNT_ID, EMAIL_ID, MANAGER_ID, ACCOUNT_CODE, EMP_CODE) values ('Admin','admin@123', 1, 'admin@gmail.com', NULL, 'GS', '1234')
+insert into EMPLOYEE_DETAIL (NAME, PASSWORD, ACCOUNT_ID, EMAIL_ID, MANAGER_ID, ACCOUNT_CODE, EMP_CODE) values ('Kaushik','password@123', 1, 'kaushik@gmail.com', 1, 'GS', '1235')
+insert into EMPLOYEE_DETAIL (NAME, PASSWORD, ACCOUNT_ID, EMAIL_ID, MANAGER_ID, ACCOUNT_CODE, EMP_CODE) values ('Shubham','password@123', 1, 'shubham@gmail.com', 1, 'PS', '1236')

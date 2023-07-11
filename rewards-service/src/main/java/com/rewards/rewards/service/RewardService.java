@@ -24,34 +24,41 @@ public class RewardService {
     @Autowired
     private RewardConverter rewardConverter;
 
-    public Reward getRewardById(Long id) {
-        return rewardRepository.findById(id).orElse(null);
+    public Reward getRewardById(Long id) throws CustomException {
+        return rewardRepository.findById(id).orElseThrow(() -> new CustomException("Reward does not exist."));
     }
 
-    public Reward saveReward(RewardDTO reward) throws CustomException {
-        Optional<Category> categoryOptional = categoryRepository.findById(reward.getCategoryId());
-        Category category = categoryOptional.orElseThrow(() -> new CustomException("Category does not exist."));
-        return rewardRepository.save(rewardConverter.toRewardEntity(reward , category));
+    public Reward saveReward(RewardDTO rewardDTO) throws CustomException {
+        Reward existingReward = rewardRepository.findByRewardCode(rewardDTO.getRewardCode());
+        if (null != existingReward)
+            new CustomException("Reward code already exist.");
+        Category category = categoryRepository.findById(rewardDTO.getCategoryId()).
+                orElseThrow(() -> new CustomException("Category does not exist."));
+        return rewardRepository.save(rewardConverter.toRewardEntity(rewardDTO, category));
     }
 
     public List<Reward> getAllRewards() {
         return rewardRepository.findAll();
     }
 
-    public void deleteByRewardId(Long id) {
+    public void deleteByRewardId(Long id) throws CustomException {
+        getRewardById(id);
         rewardRepository.deleteById(id);
     }
 
-    public Category getCategoryById(Long id) {
-        Optional<Category> category = categoryRepository.findById(id);
-        return category.isPresent() ? category.get() : null;
+    public Category getCategoryById(Long id) throws CustomException {
+        return categoryRepository.findById(id).orElseThrow(() -> new CustomException("Category does not exist."));
     }
 
-    public Category saveCategory(Category category){
+    public Category saveCategory(Category category) {
+        Category existingCategory = categoryRepository.findByCategoryCode(category.getCategoryCode());
+        if (null != existingCategory)
+            new CustomException("Category code already exist.");
         return categoryRepository.save(category);
     }
 
-    public void deleteByCategoryId(Long id) {
+    public void deleteByCategoryId(Long id) throws CustomException {
+        getCategoryById(id);
         categoryRepository.deleteById(id);
     }
 
@@ -59,7 +66,8 @@ public class RewardService {
         return categoryRepository.findAll();
     }
 
-    public List<Reward> getAllRewardsByCategoryId(Long categoryId) {
+    public List<Reward> getAllRewardsByCategoryId(Long categoryId) throws CustomException {
+        getCategoryById(categoryId);
         return rewardRepository.findByCategoryCategoryId(categoryId);
     }
 }

@@ -66,13 +66,13 @@ public class EmployeeService {
 
     public Employee getEmployeeByEmpId(Long empId, boolean getManagerDetails) throws CustomException {
         Optional<Employee> employee = employeeRepository.findById(empId);
-        Employee currentEmployee = employee.orElseThrow(() -> new CustomException("Employee doesnot exist."));
+        Employee currentEmployee = employee.orElseThrow(() -> new CustomException("Employee doesn't exist."));
         return (getManagerDetails) ? currentEmployee.getManager() : currentEmployee;
     }
 
     public Employee getEmployeeByEmpCode(Long empCode, boolean getManagerDetails) throws CustomException {
         Employee currentEmployee = employeeRepository.findByEmpCode(empCode).
-                orElseThrow(() -> new CustomException("Employee doesnot exist."));
+                orElseThrow(() -> new CustomException("Employee doesn't exist."));
         return (getManagerDetails) ? currentEmployee.getManager() : currentEmployee;
     }
 
