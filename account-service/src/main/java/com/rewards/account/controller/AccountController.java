@@ -25,6 +25,11 @@ public class AccountController {
         return new ResponseEntity<>(accountService.getAccountById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/getAccountByAccCode/{accCode}")
+    public ResponseEntity<Account> getAccountByAccCode(@PathVariable("accCode") String accCode) throws CustomException {
+        return new ResponseEntity<>(accountService.getAccountByAccCode(accCode), HttpStatus.OK);
+    }
+
     @PostMapping("/saveAccount")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "success"),

@@ -56,7 +56,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/getAllEmpWithinAccount/{accountCode}")
-    public ResponseEntity<List<EmployeeDTO>> getAllEmployeesInAccount(@PathVariable String accountCode) {
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployeesInAccount(@PathVariable String accountCode) throws CustomException {
         return new ResponseEntity<>(employeeConverter.toEmpDtoList(employeeService.getEmployeesByAccCode(accountCode)), HttpStatus.OK);
     }
 

@@ -31,4 +31,11 @@ public class AccountService {
     public List<Account> getAllAccounts() {
         return accountRepository.findAll();
     }
+
+    public Account getAccountByAccCode(String accCode) throws CustomException {
+        Account account = accountRepository.findByAccountCode(accCode);
+        if(null == account)
+            throw new CustomException("Account code doesn't exist.");
+        return account;
+    }
 }

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -92,13 +93,21 @@ public class EmployeeService {
             }
             Employee employee = employeeRepository.findByEmpCode(employeeDto.getEmpCode()).orElse(null);
             //if Manager exist as Employee
-			if (employee != null)
+            if (employee != null)
                 employeeDto.setEmpId(employee.getEmpId());
             return employeeRepository.save(employeeConverter.toEmpEntity(employeeDto, manager));
         }).collect(Collectors.toList());
     }
 
-    public List<Employee> getEmployeesByAccCode(String accountCode) {
+    public List<Employee> getEmployeesByAccCode(String accountCode) throws CustomException {
+        try {
+            restTemplate.getForObject("http://ACCOUNT-SERVICE/account/getAccountByAccCode/" + accountCode, Account.class);
+        } catch (IllegalStateException ise) {
+            throw new CustomException("Account service is taking longer time than expected. Please try again later.");
+        } catch (RestClientException rce) {
+            throw new CustomException(rce.getMessage());
+        }
         return employeeRepository.findByAccountCode(accountCode);
     }
+
 }
