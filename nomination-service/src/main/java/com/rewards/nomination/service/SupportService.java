@@ -34,7 +34,6 @@ public class SupportService {
         NominationEntity nominationEntity = nominationRepository.findById(supportDTO.getNominationId())
                 .orElseThrow(() -> new CustomException("Nomination doesn't exist."));
         Support supportNomination = supportRepository.save(supportConverter.toSupportEntity(supportDTO,nominationEntity));
-//        NominationEntity nominationEntity = supportNomination.getNomination();
         nominationEntity.setSupportCount(nominationEntity.getSupportCount() + 1);
         nominationRepository.save(nominationEntity);
         return supportNomination;
