@@ -2,8 +2,10 @@ package com.rewards.nomination.service;
 
 import com.rewards.nomination.entity.EmailAttribute;
 import com.rewards.nomination.entity.NominationEntity;
+import com.rewards.nomination.exception.CustomException;
 import com.rewards.nomination.repository.NominationRepository;
 import com.rewards.nomination.util.NominationStatusEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class NominationService {
 
     @Autowired
@@ -26,29 +29,38 @@ public class NominationService {
     private KafkaTemplate kafkaTemplate;
 
     public NominationEntity saveNomination(NominationEntity nomination) {
-        nomination.setNominationStatus(NominationStatusEnum.SUBMITTED);
-        nomination.setSupportCount(1);
+        log.info("Inside saveNomination of Nomination Service");
+        if(nomination.getNominationType().name().equals("SELF_NOMINATION")) {
+            nomination.setNominationStatus(NominationStatusEnum.SUBMITTED);
+        }else{
+            nomination.setNominationStatus(NominationStatusEnum.RECOGNIZED);
+        }
         nomination.setNominationDate(new Date());
 //        if (nomination.getNominatedTo() != 0l) {
 //            UserDTO user = restTemplate.getForObject("http://localhost:8080/getUser/" + nomination.getNominatedTo(), UserDTO.class);
 //            nomination.setNominatedManagerId(user.getManagerId());
 //        }
         NominationEntity nominationEntity = nominationRepository.save(nomination);
-        EmailAttribute emailAttribute = new EmailAttribute("Nomination for Reward", "Hi Kaushik , sending you the test email hopes it works!!!", "Kaushikkapoor1996@gmail.com", "shubhambankar734@gmail.com");
+        EmailAttribute emailAttribute = new EmailAttribute("Nomination for Reward",
+                "Hi Kaushik , sending you the test email hopes it works!!!",
+                "Kaushikkapoor1996@gmail.com", "shubhambankar734@gmail.com");
         kafkaTemplate.send("NewTopic", emailAttribute);
         return nominationEntity;
     }
 
-    public NominationEntity getNomination(long id) {
-        Optional<NominationEntity> nominationOptional = nominationRepository.findById(id);
-        return nominationOptional.orElse(null);
+    public NominationEntity getNomination(long id) throws CustomException {
+        log.info("Inside getNomination by Id");
+        return nominationRepository.findById(id).orElseThrow(() -> new CustomException("Nomination doesn't exist."));
     }
 
-    public void deleteNominationById(Long id) {
+    public void deleteNominationById(Long id) throws CustomException {
+        log.info("Inside deleteNominationById");
+        getNomination(id);
         nominationRepository.deleteById(id);
     }
 
     public List<NominationEntity> findByNominationStatus(NominationStatusEnum nominationStatusEnum, int pageNo, int pageSize) {
+        log.info("Inside findByNominationStatus");
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         List<NominationEntity> nominationEntityList = nominationRepository.findAllByNominationStatus(nominationStatusEnum, pageable);
         return nominationEntityList;

@@ -16,10 +16,11 @@ public class Recognition {
     private Long recognitionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nominationId", referencedColumnName = "nominationId")
+    @JoinColumn(name = "nominationId")
     private NominationEntity nomination;
 
     private Long recognizedBy;
     private String feedback;
-    private Date recognitionDate;
+    private Date recognitionCreatedDate;
+    private Date recognitionUpdatedDate;
 }

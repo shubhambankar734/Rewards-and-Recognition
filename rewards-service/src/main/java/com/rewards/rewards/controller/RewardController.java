@@ -6,6 +6,9 @@ import com.rewards.rewards.entity.Category;
 import com.rewards.rewards.entity.Reward;
 import com.rewards.rewards.exception.CustomException;
 import com.rewards.rewards.service.RewardService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,12 @@ import java.util.List;
 @RequestMapping("/reward")
 @CrossOrigin("*")
 @Validated
+@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Success"),
+        @ApiResponse(responseCode = "201", description = "Created"),
+        @ApiResponse(responseCode = "400", description = "Bad request"),
+        @ApiResponse(responseCode = "404", description = "Not found")
+})
 public class RewardController {
 
     @Autowired
@@ -81,7 +90,7 @@ public class RewardController {
     }
 
     @GetMapping("/getAllRewardsByCategoryId/{categoryId}")
-    public ResponseEntity<List<Reward>> getAllRewardsByCategoryId(@PathVariable Long categoryId) throws CustomException {
-        return new ResponseEntity<>(rewardService.getAllRewardsByCategoryId(categoryId), HttpStatus.OK);
+    public ResponseEntity<List<RewardDTO>> getAllRewardsByCategoryId(@PathVariable Long categoryId) throws CustomException {
+        return new ResponseEntity<>(rewardConverter.toRewardDtoList(rewardService.getAllRewardsByCategoryId(categoryId)), HttpStatus.OK);
     }
 }

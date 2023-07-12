@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -82,7 +83,9 @@ public class EmployeeService {
         return employeeRepository.findByNameContainingIgnoreCase(name);
     }
 
+    @Transactional
     public List<Employee> saveEmployees(@RequestBody List<EmployeeDTO> employeeList) {
+        log.info("Saving All Employees");
         return employeeList.stream().map(employeeDto -> {
             Employee manager = employeeRepository.findByEmpCode(employeeDto.getManagerEmpCode()).orElse(null);
             //if Employee's Manager doesnot exist in DB
@@ -100,6 +103,7 @@ public class EmployeeService {
     }
 
     public List<Employee> getEmployeesByAccCode(String accountCode) throws CustomException {
+        log.info("get all employees by account code");
         try {
             restTemplate.getForObject("http://ACCOUNT-SERVICE/account/getAccountByAccCode/" + accountCode, Account.class);
         } catch (IllegalStateException ise) {

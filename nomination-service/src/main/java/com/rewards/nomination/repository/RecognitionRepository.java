@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface RecognitionRepository extends JpaRepository<Recognition, Long> {
 
-    List<Recognition> findByNominationNominationIdOrderByRecognitionDateDesc(Long nominationId);
+    List<Recognition> findByNominationNominationIdOrderByRecognitionCreatedDateDesc(Long nominationId);
 }

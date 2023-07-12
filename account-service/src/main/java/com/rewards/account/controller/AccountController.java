@@ -15,6 +15,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/account")
 @CrossOrigin("*")
+@ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Success"),
+            @ApiResponse(responseCode = "201", description = "Created"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "404", description = "Not found")
+    })
 public class AccountController {
 
     @Autowired
@@ -31,11 +37,6 @@ public class AccountController {
     }
 
     @PostMapping("/saveAccount")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "success"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "404", description = "Not found")
-    })
     public ResponseEntity<Account> saveAccount(@RequestBody Account account) throws CustomException {
         return new ResponseEntity<>(accountService.saveAccount(account), HttpStatus.OK);
     }

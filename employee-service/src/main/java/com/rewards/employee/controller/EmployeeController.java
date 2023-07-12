@@ -5,6 +5,8 @@ import com.rewards.employee.dto.EmployeeDTO;
 import com.rewards.employee.entity.Employee;
 import com.rewards.employee.exception.CustomException;
 import com.rewards.employee.service.EmployeeService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/employee")
 @CrossOrigin("*")
+@ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Success"),
+        @ApiResponse(responseCode = "201", description = "Created"),
+        @ApiResponse(responseCode = "400", description = "Bad request"),
+        @ApiResponse(responseCode = "404", description = "Not found")
+})
 public class EmployeeController {
 
     @Autowired
@@ -26,7 +34,7 @@ public class EmployeeController {
     @GetMapping("/getEmpWithId/{empId}")
     public ResponseEntity<EmployeeDTO> getEmployeeByEmpId(@PathVariable Long empId, @RequestParam(required = false) boolean getManagerDetails) throws CustomException {
         Employee employee = employeeService.getEmployeeByEmpId(empId, getManagerDetails);
-        if(employee == null)
+        if (employee == null)
             throw new CustomException("Manager doesn't exist.");
         return new ResponseEntity<>(employeeConverter.toEmpDto(employee), HttpStatus.OK);
     }
@@ -34,7 +42,7 @@ public class EmployeeController {
     @GetMapping("/getEmpWithCode/{empCode}")
     public ResponseEntity<EmployeeDTO> getEmployeeByEmpCode(@PathVariable Long empCode, @RequestParam(required = false) boolean getManagerDetails) throws CustomException {
         Employee employee = employeeService.getEmployeeByEmpCode(empCode, getManagerDetails);
-        if(employee == null)
+        if (employee == null)
             throw new CustomException("Manager doesn't exist.");
         return new ResponseEntity<>(employeeConverter.toEmpDto(employee), HttpStatus.OK);
     }
@@ -61,7 +69,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/saveAllEmp")
-    public ResponseEntity<List<Employee>> saveAllEmployees(@RequestBody List<EmployeeDTO> employees){
-        return new ResponseEntity<>(employeeService.saveEmployees(employees), HttpStatus.CREATED);
+    public ResponseEntity<List<EmployeeDTO>> saveAllEmployees(@RequestBody List<EmployeeDTO> employees) {
+        return new ResponseEntity<>(employeeConverter.toEmpDtoList(employeeService.saveEmployees(employees)), HttpStatus.CREATED);
     }
 }

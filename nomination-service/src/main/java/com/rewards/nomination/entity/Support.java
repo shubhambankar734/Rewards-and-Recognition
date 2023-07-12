@@ -1,5 +1,6 @@
 package com.rewards.nomination.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,8 +15,9 @@ public class Support {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long supportId;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nominationId", referencedColumnName = "nominationId")
+    @JoinColumn(name = "nominationId")
     private NominationEntity nomination;
 
     private Long supportedBy;
