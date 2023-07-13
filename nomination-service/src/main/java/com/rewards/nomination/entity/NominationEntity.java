@@ -28,7 +28,8 @@ public class NominationEntity {
     private long supportCount;
     private long recognitionCount;
     private String reviewerFeedback;
-    private Date nominationDate;
+    private Date nominationCreatedDate;
+    private Date nominationUpdatedDate;
     @OneToMany(mappedBy = "nomination")
     @JsonIgnore
     private List<Support> supportList;

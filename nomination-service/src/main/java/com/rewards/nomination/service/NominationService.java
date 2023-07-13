@@ -15,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -30,12 +29,14 @@ public class NominationService {
 
     public NominationEntity saveNomination(NominationEntity nomination) {
         log.info("Inside saveNomination of Nomination Service");
-        if(nomination.getNominationType().name().equals("SELF_NOMINATION")) {
+        if (nomination.getNominationType().name().equals("SELF_NOMINATION")) {
             nomination.setNominationStatus(NominationStatusEnum.SUBMITTED);
-        }else{
+        } else {
             nomination.setNominationStatus(NominationStatusEnum.RECOGNIZED);
         }
-        nomination.setNominationDate(new Date());
+        nomination.setNominationCreatedDate(new Date());
+        nomination.setNominationUpdatedDate(nomination.getNominationCreatedDate());
+
 //        if (nomination.getNominatedTo() != 0l) {
 //            UserDTO user = restTemplate.getForObject("http://localhost:8080/getUser/" + nomination.getNominatedTo(), UserDTO.class);
 //            nomination.setNominatedManagerId(user.getManagerId());
@@ -43,8 +44,15 @@ public class NominationService {
         NominationEntity nominationEntity = nominationRepository.save(nomination);
         EmailAttribute emailAttribute = new EmailAttribute("Nomination for Reward",
                 "Hi Kaushik , sending you the test email hopes it works!!!",
-                "Kaushikkapoor1996@gmail.com", "shubhambankar734@gmail.com");
+                "Kaushik.kapoor@publicissapient.com", "shubham.bankar@publicissapient.com");
         kafkaTemplate.send("NewTopic", emailAttribute);
+        return nominationEntity;
+    }
+
+    public NominationEntity updateNomination(NominationEntity nomination) {
+        log.info("Inside updateNomination of Nomination Service");
+        nomination.setNominationUpdatedDate(new Date());
+        NominationEntity nominationEntity = nominationRepository.save(nomination);
         return nominationEntity;
     }
 

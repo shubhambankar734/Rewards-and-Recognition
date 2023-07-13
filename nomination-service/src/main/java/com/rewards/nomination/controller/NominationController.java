@@ -37,7 +37,7 @@ public class NominationController {
 
     @PutMapping("updateNomination")
     public ResponseEntity<NominationEntity> updateNomination(@RequestBody NominationEntity nomination) {
-        return new ResponseEntity<>(nominationService.saveNomination(nomination), HttpStatus.OK);
+        return new ResponseEntity<>(nominationService.updateNomination(nomination), HttpStatus.OK);
     }
 
     @DeleteMapping("deleteNomination/{id}")
@@ -50,6 +50,5 @@ public class NominationController {
     public ResponseEntity<NominationEntity> findByNominationStatus(@RequestParam NominationStatusEnum status, @RequestParam("PageNo") int pageNo, @RequestParam("PageSize") int pageSize) {
         return new ResponseEntity(nominationService.findByNominationStatus(status, pageNo, pageSize), HttpStatus.OK);
     }
-
 
 }

@@ -7,6 +7,7 @@ import com.rewards.nomination.entity.Recognition;
 import com.rewards.nomination.exception.CustomException;
 import com.rewards.nomination.repository.NominationRepository;
 import com.rewards.nomination.repository.RecognitionRepository;
+import com.rewards.nomination.util.NominationStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class RecognitionService {
                 .orElseThrow(() -> new CustomException("Nomination doesn't exist."));
         Recognition recognizedNomination = recognitionRepository.save(recognitionConverter.toRecognitionEntity(recognitionDTO, nominationEntity));
         nominationEntity.setRecognitionCount(nominationEntity.getRecognitionCount() + 1);
+//        nominationEntity.setNominationStatus(NominationStatusEnum.RECOGNIZED);
         nominationRepository.save(nominationEntity);
         return recognizedNomination;
     }
