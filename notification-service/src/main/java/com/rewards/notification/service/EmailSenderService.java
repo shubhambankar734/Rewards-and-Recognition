@@ -9,17 +9,19 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EmailSenderService {
 
     @Autowired
     JavaMailSender mailSender;
 
-    public String sendEmail(String toRecipient, String body, String ccRecipient, String subject) {
+    public String sendEmail(String toRecipient, String body, List<String> ccRecipient, String subject) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(toRecipient);
         simpleMailMessage.setText(body);
-        simpleMailMessage.setCc(ccRecipient);
+        simpleMailMessage.setCc(ccRecipient.toArray(new String[ccRecipient.size()]));
         simpleMailMessage.setSubject(subject);
         mailSender.send(simpleMailMessage);
         return "Email Send Successfully...";

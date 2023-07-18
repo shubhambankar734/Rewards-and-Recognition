@@ -13,6 +13,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -42,9 +43,9 @@ public class NominationService {
 //            nomination.setNominatedManagerId(user.getManagerId());
 //        }
         NominationEntity nominationEntity = nominationRepository.save(nomination);
-        EmailAttribute emailAttribute = new EmailAttribute("Nomination for Reward",
-                "Hi Kaushik , sending you the test email hopes it works!!!",
-                "Kaushik.kapoor@publicissapient.com", "shubham.bankar@publicissapient.com");
+        EmailAttribute emailAttribute = new EmailAttribute("Nomination for R & R",
+                "Hi Kaushik , Congratulations! You have been nominated for Reward & Recognition.",
+                "Kaushik.kapoor@publicissapient.com", Arrays.asList("shubham.bankar@publicissapient.com"));
         kafkaTemplate.send("NewTopic", emailAttribute);
         return nominationEntity;
     }
@@ -53,6 +54,10 @@ public class NominationService {
         log.info("Inside updateNomination of Nomination Service");
         nomination.setNominationUpdatedDate(new Date());
         NominationEntity nominationEntity = nominationRepository.save(nomination);
+        EmailAttribute emailAttribute = new EmailAttribute("R&R Nomination Update",
+                "Hi Kaushik , Congratulations! Your nomination for R&R has been " + nomination.getNominationStatus().name(),
+                "Kaushik.kapoor@publicissapient.com", Arrays.asList("shubham.bankar@publicissapient.com","reviewerrecognitionteam@publicissapient.com"));
+        kafkaTemplate.send("NewTopic", emailAttribute);
         return nominationEntity;
     }
 
