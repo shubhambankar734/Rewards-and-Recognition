@@ -56,11 +56,21 @@ public class EmployeeService {
 
     public Employee saveEmployee(EmployeeDTO currentEmployeeDTO) throws CustomException {
         log.info("Saving a Employee");
-        Employee employee = employeeRepository.findByEmailId(currentEmployeeDTO.getEmailId());
-        if (employee != null) {
-            throw new CustomException("Email Id already exist");
+        if (currentEmployeeDTO.getEmpId() == 0l) {
+            Employee employee = employeeRepository.findByEmailId(currentEmployeeDTO.getEmailId());
+            if (employee != null) {
+                throw new CustomException("Email Id already exist");
+            }
         }
-        Employee manager = getEmployeeByEmpCode(currentEmployeeDTO.getManagerEmpCode(), false);
+        Employee manager = employeeRepository.findByEmpCode(currentEmployeeDTO.getManagerEmpCode()).orElse(null);
+        //if Employee's Manager doesnot exist in DB
+        if (manager == null) {
+            manager = new Employee();
+            manager.setAccountId(currentEmployeeDTO.getAccountId());
+            manager.setAccountCode(currentEmployeeDTO.getAccountCode());
+            manager.setEmpCode(currentEmployeeDTO.getManagerEmpCode());
+            manager = employeeRepository.save(manager);
+        }
         Employee currentEmployee = employeeConverter.toEmpEntity(currentEmployeeDTO, manager);
         return employeeRepository.save(currentEmployee);
     }
@@ -91,6 +101,8 @@ public class EmployeeService {
             //if Employee's Manager doesnot exist in DB
             if (manager == null) {
                 manager = new Employee();
+                manager.setAccountId(employeeDto.getAccountId());
+                manager.setAccountCode(employeeDto.getAccountCode());
                 manager.setEmpCode(employeeDto.getManagerEmpCode());
                 manager = employeeRepository.save(manager);
             }

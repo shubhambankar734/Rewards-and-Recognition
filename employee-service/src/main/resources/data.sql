@@ -1,3 +1,5 @@
-insert into EMPLOYEE_DETAIL (NAME, PASSWORD, ACCOUNT_ID, EMAIL_ID, MANAGER_ID, ACCOUNT_CODE, EMP_CODE) values ('Admin','admin@123', 1, 'admin@gmail.com', NULL, 'GS', '1234')
-insert into EMPLOYEE_DETAIL (NAME, PASSWORD, ACCOUNT_ID, EMAIL_ID, MANAGER_ID, ACCOUNT_CODE, EMP_CODE) values ('Kaushik','password@123', 1, 'kaushik@gmail.com', 1, 'GS', '1235')
-insert into EMPLOYEE_DETAIL (NAME, PASSWORD, ACCOUNT_ID, EMAIL_ID, MANAGER_ID, ACCOUNT_CODE, EMP_CODE) values ('Shubham','password@123', 1, 'shubham@gmail.com', 1, 'PS', '1236')
+insert into EMPLOYEE_DETAIL (NAME, PASSWORD, ACCOUNT_ID, EMAIL_ID, MANAGER_ID, ACCOUNT_CODE, EMP_CODE) values ('Admin','Admin@123', 1, 'admin@publicissapient.com', NULL, 'GS', '1234')
+--insert into EMPLOYEE_DETAIL (NAME, PASSWORD, ACCOUNT_ID, EMAIL_ID, MANAGER_ID, ACCOUNT_CODE, EMP_CODE) values ('Kaushik Kapoor','Kaushik@123', 1, 'kaushik@publicissapient.com', 1, 'GS', '1235')
+--insert into EMPLOYEE_DETAIL (NAME, PASSWORD, ACCOUNT_ID, EMAIL_ID, MANAGER_ID, ACCOUNT_CODE, EMP_CODE) values ('Shubham Bankar','Shubham@123', 1, 'shubham@publicissapient.com', 1, 'PS', '1236')
+insert into EMPLOYEE_DETAIL (NAME, PASSWORD, ACCOUNT_ID, EMAIL_ID, MANAGER_ID, ACCOUNT_CODE, EMP_CODE) values ('Harmeet Bhatia','Harmeet@123', 1, 'Harmeet.Bhatia@publicissapient.com', 1, 'PS', '1235')
+insert into EMPLOYEE_DETAIL (NAME, PASSWORD, ACCOUNT_ID, EMAIL_ID, MANAGER_ID, ACCOUNT_CODE, EMP_CODE) values ('Brijesh Sharma','Brijesh@123', 1, 'Brijesh.Sharma@publicissapient.com', 1, 'PS', '1236')
